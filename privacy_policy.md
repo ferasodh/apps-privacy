@@ -1,4 +1,4 @@
-Privacy Policy for [Your App Name]
+Privacy Policy for FocusDot
 
 This Privacy Policy is effective as of October 30, 2025 and governs the privacy practices of FocusDot (the "App"), operated by "We".
 
