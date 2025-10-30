@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Your App Name] Privacy Policy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;660;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f8f8;
+        }
+        /* Style for Markdown rendering */
+        #content h1 { font-size: 2.25rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 1rem; }
+        #content h2 { font-size: 1.75rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; border-bottom: 1px solid #ddd; padding-bottom: 0.25rem; }
+        #content h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        #content p, #content ul, #content ol { margin-bottom: 1rem; line-height: 1.6; }
+        #content ul { list-style-type: disc; padding-left: 1.5rem; }
+        #content strong { font-weight: 660; }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-xl p-6 sm:p-10 border border-gray-100">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">App Privacy Policy</h1>
+        
+        <!-- Content will be loaded here -->
+        <div id="content" class="text-gray-700">
+            <!-- Loading indicator -->
+            <div id="loading" class="text-center py-12">
+                <svg class="animate-spin h-8 w-8 text-indigo-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="mt-2 text-sm text-gray-500">Loading Privacy Policy...</p>
+            </div>
+        </div>
+        
+        <p class="text-center mt-8 text-sm text-gray-400">
+            Powered by GitHub Pages.
+        </p>
+    </div>
+
+    <script>
+        // Simple Markdown-to-HTML converter
+        function convertMarkdownToHtml(markdown) {
+            // Function to handle headings, lists, and basic formatting
+            let html = markdown
+                // Horizontal Rule
+                .replace(/^---\s*$/gm, '<hr class="my-6 border-t border-gray-200" />')
+                // Headings
+                .replace(/^#\s*(.*)$/gm, '<h1>$1</h1>')
+                .replace(/^##\s*(.*)$/gm, '<h2>$1</h2>')
+                .replace(/^###\s*(.*)$/gm, '<h3>$1</h3>')
+                // Bold text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/__(.*?)__/g, '<strong>$1</strong>')
+                // List items (simple, assumes no nesting)
+                .replace(/^\s*\*\s*(.*)$/gm, '<li>$1</li>')
+                .replace(/^\s*(\d+)\.\s*(.*)$/gm, '<li>$2</li>');
+            
+            // Wrap list items in ul/ol and paragraphs (simplified approach)
+            let inList = false;
+            let lines = html.split('\n');
+            let finalHtml = '';
+            
+            for (let line of lines) {
+                if (line.startsWith('<li>')) {
+                    if (!inList) {
+                        finalHtml += '<ul>'; // Using ul for simplicity
+                        inList = true;
+                    }
+                    finalHtml += line;
+                } else {
+                    if (inList) {
+                        finalHtml += '</ul>';
+                        inList = false;
+                    }
+                    if (line.startsWith('<h') || line.startsWith('<hr')) {
+                        finalHtml += line;
+                    } else if (line.trim() !== '') {
+                        finalHtml += `<p>${line.trim()}</p>`;
+                    }
+                }
+            }
+            if (inList) {
+                finalHtml += '</ul>';
+            }
+
+            return finalHtml;
+        }
+
+        // Fetch the Markdown file and render it
+        async function loadPrivacyPolicy() {
+            try {
+                const response = await fetch('privacy_policy.md');
+                if (!response.ok) {
+                    throw new Error('Failed to load privacy_policy.md');
+                }
+                const markdownText = await response.text();
+                const contentDiv = document.getElementById('content');
+                const loadingDiv = document.getElementById('loading');
+
+                // Render content
+                contentDiv.innerHTML = convertMarkdownToHtml(markdownText);
+
+            } catch (error) {
+                console.error("Error loading privacy policy:", error);
+                const contentDiv = document.getElementById('content');
+                contentDiv.innerHTML = '<p class="text-red-600 text-center">Error: Could not load the Privacy Policy content. Please check the file path.</p>';
+            }
+        }
+
+        window.onload = loadPrivacyPolicy;
+    </script>
+</body>
+</html>
