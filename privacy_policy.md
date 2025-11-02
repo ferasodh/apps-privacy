@@ -26,13 +26,18 @@ Device Identifiers: Basic device identifiers used by third-party analytics (like
 
 2. Permissions Used
 
-The App is designed to function without requesting any special Android Permissions (such as CAMERA, LOCATION, or READ_CONTACTS).
+FocusDot requests the following permissions on Android to enable its core functionality:
 
-No Sensitive Permissions Requested: The App does not require access to your device's sensitive data or features.
+- WAKE_LOCK: This permission allows the timer to continue running accurately even when your device's screen is off. This is essential for ensuring your focus sessions and breaks are timed correctly without interruption.
 
-Basic Network Access: The App uses standard, non-requestable network access to communicate with essential third-party services (like Google Play Services and Firebase) for crash reporting and updates. This does not require explicit user consent via the Android permission system.
+- RECEIVE_BOOT_COMPLETED: This permission is used to reschedule any active timers or alarms if you restart your device. This ensures that your timer state is not lost after a reboot.
 
-We only use the necessary underlying functionality to provide the intended experience of the App.
+- FOREGROUND_SERVICE: To provide a reliable timer that runs in the background, FocusDot uses a foreground service. This permission is required on modern Android versions to keep the timer active and accurate when you are not actively using the app.
+
+- USE_EXACT_ALARM / SCHEDULE_EXACT_ALARM: These permissions are necessary for the timer to function precisely. They allow the app to schedule alarms at exact times to notify you when a focus session or break has ended.
+
+- POST_NOTIFICATIONS: This permission is required to show you notifications about your timer's status, such as when a session starts, is in progress, or has completed.
+
 
 3. Security
 
